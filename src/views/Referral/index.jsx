@@ -22,6 +22,8 @@ import {
   TextField,
   FormControl,
 } from "@material-ui/core";
+import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
+
 import { ReactComponent as XIcon } from "../../assets/icons/x.svg";
 import { NavLink } from "react-router-dom";
 import { FileCopy, Close as CloseIcon } from "@material-ui/icons";
@@ -37,6 +39,7 @@ const zeroAdrress = "0x0000000000000000000000000000000000000000";
 export default function Referral() {
   const { provider, address, connected, web3, chainID } = useWeb3Context();
   const [loading, setLoading] = useState(false);
+  const [loadingClaim, setLoadingClaim] = useState(false);
 
   // const address = useAddress();
 
@@ -46,7 +49,16 @@ export default function Referral() {
     app: { referral: referralStorage },
   } = useStore().getState();
 
-  const hostAddress = "http://localhost:3000";
+  const hostAddress = "http://mushdao.finance";
+
+  const [openClainm, setOpenClainm] = useState(false);
+  const handleCloseClaim = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenClainm(false);
+  };
 
   const [open, setOpen] = useState(false);
   const openCopy = () => {
@@ -66,18 +78,18 @@ export default function Referral() {
 
   useEffect(() => {
     if (connected) {
-      if (currentReferral) getMyRewards(currentReferral);
+      if (currentReferral) getMyRewards();
     }
   }, [connected]);
 
   // methods
 
-  const getMyRewards = async code => {
+  const getMyRewards = async () => {
     setLoading(true);
     const signer = provider.getSigner();
     const referralContract = new ethers.Contract(addresses[chainID].REFERRAL, ReferralABI, signer);
 
-    const code32String = utils.formatBytes32String(code);
+    const code32String = utils.formatBytes32String(currentReferral);
 
     let addressByCode = await referralContract.referrals(code32String);
     console.log("addressByCode", addressByCode);
@@ -93,17 +105,17 @@ export default function Referral() {
     }
   };
 
-  const createReferralCode = async code => {
+  const createReferralCode = async (code, done) => {
     setLoading(true);
     const signer = provider.getSigner();
     const referralContract = new ethers.Contract(addresses[chainID].REFERRAL, ReferralABI, signer);
 
     const code32String = utils.formatBytes32String(code);
-    console.log("code32String", code32String);
     try {
       const tx = await referralContract.createReferral(address, code32String);
       await tx.wait();
       console.log("done!");
+      done();
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -111,15 +123,21 @@ export default function Referral() {
     }
   };
 
-  const claimRewards = async code => {
+  const claimRewards = async () => {
+    if (!currentReferral) return;
+    setLoadingClaim(true);
     const signer = provider.getSigner();
     const referralContract = new ethers.Contract(addresses[chainID].REFERRAL, ReferralABI, signer);
     //
-    const code32String = utils.formatBytes32String(code);
+    const code32String = utils.formatBytes32String(currentReferral);
     try {
       const tx = await referralContract.claimRewards(code32String);
       await tx.wait();
+      await getMyRewards();
+      setLoadingClaim(false);
+      setOpenClainm(true);
     } catch (error) {
+      setLoadingClaim(false);
       console.error(error);
     }
   };
@@ -131,14 +149,18 @@ export default function Referral() {
         await getMyRewards(currentReferral);
       } else {
         // create new
-        await createReferralCode(referralCode);
-        // if success
-        setMyRewardsNumber(0);
-        dispatch(setReferral(referralCode));
-        setCurrentReferral(referralCode);
+        await createReferralCode(referralCode, () => {
+          // if success
+          setMyRewardsNumber(0);
+          dispatch(setReferral(referralCode));
+          setCurrentReferral(referralCode);
+        });
       }
     } catch (error) {}
   };
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
 
   const copyActionToast = (
     <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
@@ -237,11 +259,13 @@ export default function Referral() {
                       fullWidth
                       variant="contained"
                       color="primary"
+                      disabled={!currentReferral}
                       onClick={() => {
-                        // createReferral();
+                        claimRewards();
                       }}
+                      className={{ loading: loadingClaim }}
                     >
-                      Claim Rewards
+                      {loadingClaim ? "Loading..." : "Claim Rewards"}
                     </Button>
                   </Box>
 
@@ -273,6 +297,12 @@ export default function Referral() {
                   </Box>
                 </Grid>
               </Grid>
+
+              <Snackbar open={openClainm} autoHideDuration={6000} onClose={handleCloseClaim}>
+                <Alert onClose={handleCloseClaim} severity="success" sx={{ width: "100%" }}>
+                  This is a success message!
+                </Alert>
+              </Snackbar>
             </Paper>
           </Fade>
         </Backdrop>

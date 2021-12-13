@@ -112,10 +112,11 @@ export const calculateUserBondDetails = createAsyncThunk(
 
       const bondAddress = bond.getAddressForBond(networkID)
       const reserveAddress = bond.getAddressForReserve(networkID)
+      const bondHelper = addresses[networkID].BOND_HELPER
       const calls = [
         { address: bondAddress, name: 'bondInfo', params: [address] },
         { address: bondAddress, name: 'pendingPayoutFor', params: [address] },
-        { address: reserveAddress, name: 'allowance', params: [address, bondAddress] },
+        { address: reserveAddress, name: 'allowance', params: [address, bond.bondHelper ? bondHelper : bondAddress] },
         { address: reserveAddress, name: 'balanceOf', params: [address] },
       ];
       

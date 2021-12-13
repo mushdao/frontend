@@ -45,8 +45,8 @@ export const loadAppDetails = createAsyncThunk(
       { address: mush_busd.networkAddrs[networkID].reserveAddress, name: 'balanceOf', params: [addresses[networkID].TREASURY_ADDRESS] },
       { address: addresses[networkID].STAKING_ADDRESS, name: 'index', params: [] },
     ];
-
     const rawAppDetails = await multicall(networkID, provider, loadAppDetailsABI, calls)
+    
     
     
     // NOTE (appleseed): marketPrice from Graph was delayed, so get CoinGecko price

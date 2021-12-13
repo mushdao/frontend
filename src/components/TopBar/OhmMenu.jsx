@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { Link, SvgIcon, Popper, Button, Paper, Typography, Divider, Box, Fade, Slide } from "@material-ui/core";
 import { ReactComponent as InfoIcon } from "../../assets/icons/info-fill.svg";
 import { ReactComponent as ArrowUpIcon } from "../../assets/icons/arrow-up.svg";
-import { ReactComponent as sMUSHTokenImg } from "../../assets/tokens/MUSH.svg";
+import { ReactComponent as sMUSHTokenImg } from "../../assets/tokens/sMUSH.svg";
 import { ReactComponent as MUSHTokenImg } from "../../assets/tokens/MUSH.svg";
 
 import "./ohmmenu.scss";
@@ -13,7 +13,7 @@ import { Trans } from "@lingui/macro";
 import { useWeb3Context } from "../../hooks/web3Context";
 
 import MUSHImg from "src/assets/tokens/MUSH.svg";
-import SMUSHImg from "src/assets/tokens/MUSH.svg";
+import SMUSHImg from "src/assets/tokens/sMUSH.svg";
 
 import { segmentUA } from "../../helpers/userAnalyticHelpers";
 
@@ -126,10 +126,10 @@ function OhmMenu() {
                   </Link> */}
                 </Box>
 
-                {/* <Box component="div" className="data-links">
+                <Box component="div" className="data-links">
                   <Divider color="secondary" className="less-margin" />
                   <Link
-                    href={`https://www.dextools.io/app/bsc/pair-explorer/0xe8c6539663973e892c21652be80cdee9a62e67bc`}
+                    href={`https://www.dextools.io/app/bsc/pair-explorer/0xbdf06fae530004361ff6802d1c4da21b7abff27e`}
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -139,7 +139,7 @@ function OhmMenu() {
                       </Typography>
                     </Button>
                   </Link>
-                </Box> */}
+                </Box>
 
                 {isEthereumAPIAvailable ? (
                   <Box className="add-tokens">

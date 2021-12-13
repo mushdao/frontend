@@ -21,7 +21,8 @@ export const busd = new StableBond({
   displayName: "BUSD",
   bondToken: "BUSD",
   isRef: true,
-  isAvailable: { [NetworkID.Mainnet]: false, [NetworkID.Testnet]: false },
+  bondHelper: true,
+  isAvailable: { [NetworkID.Mainnet]: true, [NetworkID.Testnet]: false },
   bondIconSvg: (BusdImg),
   bondContractABI: BondContractRefABI,
   networkAddrs: {
@@ -42,7 +43,8 @@ export const mush_busd = new LPBond({
   displayName: "MUSH-BUSD LP",
   bondToken: "BUSD",
   isRef: true,
-  isAvailable: { [NetworkID.Mainnet]: false, [NetworkID.Testnet]: false },
+  bondHelper: true,
+  isAvailable: { [NetworkID.Mainnet]: true, [NetworkID.Testnet]: false },
   bondIconSvg: MUSHBUSDImg,
   bondContractABI: BondContractRefABI,
   reserveContract: ReserveOhmDaiContract,
@@ -57,7 +59,7 @@ export const mush_busd = new LPBond({
     },
   },
   lpUrl:
-    "https://pancakeswap.finance/add/0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56/0xcc238200cFfdA7A5E2810086c26d5334e64F1155",
+    "https://pancakeswap.finance/add/0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56/0xddC7aebCAd4d6d4b4d437A97faE76d4042e6a9Cc",
 });
 
 // HOW TO ADD A NEW BOND:

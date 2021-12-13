@@ -1,4 +1,4 @@
-import { ethers, BigNumber, BigNumberish } from "ethers";
+import { ethers, BigNumber, BigNumberish, utils } from "ethers";
 import { contractForRedeemHelper } from "../helpers";
 import { getBalances, calculateUserBondDetails, loadAccountDetails } from "./AccountSlice";
 import { findOrLoadMarketPrice, getAppState } from "./AppSlice";
@@ -17,10 +17,11 @@ import {
 } from "./interfaces";
 import multicall from '../helpers/multicall'
 import { addresses } from "../constants";
+import { abi as BondHelperABI } from "../abi/BondHelper.json"
 
 export const changeApproval = createAsyncThunk(
   "bonding/changeApproval",
-  async ({ address, bond, provider, networkID }: IApproveBondAsyncThunk, { dispatch }) => {
+  async ({ address, bond, provider, networkID }: IApproveBondAsyncThunk, { dispatch, getState }) => {
     if (!provider) {
       dispatch(error("Please connect your wallet!"));
       return;
@@ -30,10 +31,11 @@ export const changeApproval = createAsyncThunk(
     const reserveContract = bond.getContractForReserve(networkID, signer);
     const bondAddr = bond.getAddressForBond(networkID);
     const bondHelper = addresses[networkID].BOND_HELPER
+    const bondAddress = bond.bondHelper ? bondHelper : bondAddr
 
     let approveTx;
-    let bondAllowance = await reserveContract.allowance(address, bondAddr);
-
+    let bondAllowance = await reserveContract.allowance(address, bondAddress);
+    
     // return early if approval already exists
     if (bondAllowance.gt(BigNumber.from("0"))) {
       dispatch(info("Approval completed."));
@@ -42,7 +44,7 @@ export const changeApproval = createAsyncThunk(
     }
 
     try {
-      approveTx = await reserveContract.approve(bondAddr, ethers.utils.parseUnits("1000000000", "ether").toString());
+      approveTx = await reserveContract.approve(bondAddress, ethers.utils.parseUnits("1000000000", "ether").toString());
       dispatch(
         fetchPendingTxns({
           txnHash: approveTx.hash,
@@ -200,23 +202,24 @@ export const bondAsset = createAsyncThunk(
 
     const { app: { referral } } = getState() as { app: { referral: string } };
     
-    console.log("referral nè", referral);
-
     const depositorAddress = address;
     const acceptedSlippage = slippage / 100 || 0.005; // 0.5% as default
     // parseUnits takes String => BigNumber
     const valueInWei = ethers.utils.parseUnits(value.toString(), "ether");
     
     let balance;
+    const bondHelperAddress = addresses[networkID].BOND_HELPER
     // Calculate maxPremium based on premium and slippage.
     // const calculatePremium = await bonding.calculatePremium();
     const signer = provider.getSigner();
     const bondContract = bond.getContractForBond(networkID, signer);
+    const bondAddress = bond.getAddressForBond(networkID)
+    const bondHelper = new ethers.Contract(bondHelperAddress, BondHelperABI, signer)
     const calculatePremium = await bondContract.bondPrice();
     const maxPremium = Math.round(Number(calculatePremium.toString()) * (1 + acceptedSlippage));
 
+    const referralCode = referral ? referral : "";
     
-    const referralAddress = referral ? referral : "0x0000000000000000000000000000000000000000";
     // Deposit the bond
     let bondTx;
     let uaData = {
@@ -228,10 +231,10 @@ export const bondAsset = createAsyncThunk(
       txHash: "",
     };
     try {
-      if(bond.isRef) {
-        bondTx = await bondContract.deposit(valueInWei, maxPremium, depositorAddress, referralAddress);
+      if(bond.bondHelper) {
+        bondTx = await bondHelper.deposit(bondAddress, valueInWei, maxPremium, depositorAddress, utils.formatBytes32String(referralCode));
       } else {
-        bondTx = await bondContract.deposit(valueInWei, maxPremium, depositorAddress);
+        bondTx = await bondContract.deposit(valueInWei, maxPremium, depositorAddress, utils.formatBytes32String(referralCode));
       }
       dispatch(
         fetchPendingTxns({ txnHash: bondTx.hash, text: "Bonding " + bond.displayName, type: "bond_" + bond.name }),

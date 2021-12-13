@@ -60,7 +60,7 @@ function NavContent() {
             <Link className="logo" component={NavLink} to="/">
               <img src={AppLogo} />
               <Typography variant="h5">
-                MUSH<span>ROOM</span>
+                MUSH<span>DAO</span>
               </Typography>
             </Link>
 
@@ -90,7 +90,12 @@ function NavContent() {
                 </Typography>
               </Link>
 
-              <Link id="dash-nav" className={`button-dapp-menu ${isActive ? "active" : ""}`} href="https://pancakeswap.finance/swap?inputCurrency=0xe9e7cea3dedca5984780bafc599bd69add087d56&outputCurrency=0xddC7aebCAd4d6d4b4d437A97faE76d4042e6a9Cc" target="_blank">
+              <Link
+                id="dash-nav"
+                className={`button-dapp-menu ${isActive ? "active" : ""}`}
+                href="https://pancakeswap.finance/swap?inputCurrency=0xe9e7cea3dedca5984780bafc599bd69add087d56&outputCurrency=0xddC7aebCAd4d6d4b4d437A97faE76d4042e6a9Cc"
+                target="_blank"
+              >
                 <Typography component="span" variant="button">
                   <SvgIcon color="primary" component={BuyIcon} viewBox="0 0 22 20" />
                   <Trans>Buy</Trans>

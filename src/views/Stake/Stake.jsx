@@ -71,15 +71,6 @@ function Stake() {
   const sohmBalance = useSelector(state => {
     return state.account.balances && state.account.balances.sohm;
   });
-  const fsohmBalance = useSelector(state => {
-    return state.account.balances && state.account.balances.fsohm;
-  });
-  const wsohmBalance = useSelector(state => {
-    return state.account.balances && state.account.balances.wsohm;
-  });
-  const wsohmAsSohm = useSelector(state => {
-    return state.account.balances && state.account.balances.wsohmAsSohm;
-  });
   const stakeAllowance = useSelector(state => {
     return state.account.staking && state.account.staking.ohmStake;
   });
@@ -178,7 +169,7 @@ function Stake() {
               <RebaseTimer />
             </Grid>
             <Grid item xs={12} sm={6} className="your-earnings">
-              <ThemeProvider theme={themeTransition}>
+              {/* <ThemeProvider theme={themeTransition}>
                 <Slide
                   direction="left"
                   mountOnEnter
@@ -203,7 +194,7 @@ function Stake() {
                     $0
                   </Typography>
                 </Slide>
-              </ThemeProvider>
+              </ThemeProvider> */}
             </Grid>
           </Grid>
           <Grid container direction="column" spacing={2}>
@@ -314,14 +305,14 @@ function Stake() {
                                 <>
                                   <Trans>First time staking</Trans> <b>MUSH</b>?
                                   <br />
-                                  <Trans>Please approve MUSHROOM to use your</Trans> <b>MUSH</b>{" "}
+                                  <Trans>Please approve MUSHDAO to use your</Trans> <b>MUSH</b>{" "}
                                   <Trans>for staking</Trans>.
                                 </>
                               ) : (
                                 <>
                                   <Trans>First time unstaking</Trans> <b>sMUSH</b>?
                                   <br />
-                                  <Trans>Please approve MUSHROOM to use your</Trans> <b>sMUSH</b>{" "}
+                                  <Trans>Please approve MUSHDAO to use your</Trans> <b>sMUSH</b>{" "}
                                   <Trans>for unstaking</Trans>.
                                 </>
                               )}

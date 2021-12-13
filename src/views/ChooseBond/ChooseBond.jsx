@@ -153,6 +153,41 @@ function ChooseBond() {
         )}
       </Paper>
 
+      <Paper className="ohm-card referral-card referral-card__mobile">
+        <Grid container>
+          <Grid item xs={12} sm="auto" style={{ flex: 1 }}>
+            <Box display="flex">
+              <Box display="flex" justifyContent="center">
+                <img src={coinsBgImg} alt="MUSHDAO" />
+              </Box>
+              <p className="white--text">
+                <i>
+                  The forming users who successfully refer will receive a 5% commission if the referred person completes
+                  to buy any bond pool.
+                </i>
+              </p>
+            </Box>
+            <Box sx={{ pt: 3 }} display="flex" justifyContent="center">
+              {address ? (
+                <div className="referral-card__address">
+                  <Zoom in={true}>
+                    <Link component={NavLink} to="/bonds/referral">
+                      <Button fullWidth variant="contained" color="primary">
+                        <Box sx={{ px: 3 }}>Referral</Box>
+                      </Button>
+                    </Link>
+                  </Zoom>
+                </div>
+              ) : (
+                <Typography variant="body1" color="textPrimary">
+                  Please connect your wallet!
+                </Typography>
+              )}
+            </Box>
+          </Grid>
+        </Grid>
+      </Paper>
+
       {isSmallScreen && (
         <Box className="ohm-card-container">
           <Grid container item spacing={2}>
@@ -165,19 +200,14 @@ function ChooseBond() {
         </Box>
       )}
 
-      <Paper className="ohm-card referral-card">
+      <Paper className="ohm-card referral-card referral-card__pc">
         <Grid container>
           <Grid item xs={12} sm="auto">
             <Box display="flex" justifyContent="center">
-              <img src={coinsBgImg} alt="Mushroom" />
+              <img src={coinsBgImg} alt="MUSHDAO" />
             </Box>
           </Grid>
           <Grid item xs={12} sm="auto" style={{ flex: 1 }}>
-            {/* <Box display="flex" justifyContent="space-between">
-              <Typography variant="h5" color="textPrimary">
-                Referral
-              </Typography>
-            </Box> */}
             <p className="white--text">
               <i>
                 The forming users who successfully refer will receive a 5% commission if the referred person completes
@@ -187,10 +217,6 @@ function ChooseBond() {
             <Box sx={{ pt: 3 }}>
               {address ? (
                 <div className="referral-card__address">
-                  {/* <Link href={`https://bscscan.com/address/${address}`} target="_blank">
-                    {shorten(address)}
-                  </Link> */}
-
                   <Zoom in={true}>
                     <Link component={NavLink} to="/bonds/referral">
                       <Button variant="contained" color="primary" size="small">

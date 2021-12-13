@@ -80,8 +80,8 @@ function Home() {
                     <AccordionDetails>
                       <Typography component="p">
                         MUSH is a 'spoon' (a fork which develops into its own unique system, and prefers cooperation
-                        over competition) of OHM built on the Binance Smart Chain network, allowing it to utilise the speed,
-                        security, and scalability that Binance Smart Chain offers.
+                        over competition) of OHM built on the Binance Smart Chain network, allowing it to utilize the
+                        speed, security, and scalability that Binance Smart Chain offers.
                       </Typography>
                     </AccordionDetails>
                   </Accordion>
@@ -98,7 +98,7 @@ function Home() {
                     </AccordionSummary>
                     <AccordionDetails>
                       <Typography component="p">
-                        $MUSH is not a stable coin. It utilises fractional treasury reserves to extract intrinsic value.
+                        $MUSH is not a stable coin. It utilizes fractional treasury reserves to extract intrinsic value.
                         MushDAO, becoming an algorithmic reserve currency, will therefore provide free floating value.
                         More information can be found on the Mathematical Basis of the DAO page.
                       </Typography>
@@ -115,8 +115,8 @@ function Home() {
                     <AccordionDetails>
                       <Typography component="p">
                         MushDAO sells bonds to investors at a discount to market prices. The profit from these bonds
-                        backs our token with real value and is used to mint new MUSH tokens using real value, allowing us
-                        to offer high APYs which incentivises long-term staking.
+                        backs our token with real value and is used to mint new MUSH tokens using real value, allowing
+                        us to offer high APYs which incentivises long-term staking.
                         <br />
                         <br />
                         Over time, the Protocol uses it's bonds to gain an increasing share of its own liquidity and
@@ -136,7 +136,7 @@ function Home() {
                     </AccordionSummary>
                     <AccordionDetails>
                       <Typography component="p">
-                        APY refers to Annual Percentage Yield. It utilises a real rate of return through compounding
+                        APY refers to Annual Percentage Yield. It utilizes a real rate of return through compounding
                         interest. If you have a $100 investment with an APY of 1000%, then 365 days later your
                         investment will be $1100.
                         <br />

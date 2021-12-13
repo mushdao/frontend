@@ -4,6 +4,7 @@
   justify-content: center;
   flex-direction: column;
   overflow: hidden;
+  padding-bottom: 2rem;
 
   .bond-img {
     position: fixed;
@@ -186,6 +187,13 @@
       width: 100%;
     }
   }
+
+  .referral-card__pc {
+    display: block;
+  }
+  .referral-card__mobile {
+    display: none;
+  }
 }
 
 .tablet #choose-bond-view {
@@ -211,6 +219,27 @@
 
     .ohm-card-container {
       width: 100%;
+    }
+    .referral-card__pc {
+      display: none;
+    }
+    .referral-card__mobile {
+      display: block;
+      margin-top: 0;
+      padding: 1rem;
+      p {
+        margin: 0;
+      }
+      img {
+        height: 5rem;
+      }
+      .referral-card__address {
+        width: 100%;
+        a {
+          width: 100%;
+          padding: 0;
+        }
+      }
     }
   }
 }

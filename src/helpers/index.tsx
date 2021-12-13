@@ -13,7 +13,7 @@ export async function getMarketPrice({ networkID, provider }: IBaseAsyncThunk) {
   const mush_busd_address = mush_busd.getAddressForReserve(networkID);
   const pairContract = new ethers.Contract(mush_busd_address, PairContractABI, provider) as PairContract;
   const reserves = await pairContract.getReserves();
-  const marketPrice = Number(reserves[0].toString()) / Number(reserves[1].toString());
+  const marketPrice = Number(reserves[1].toString()) / Number(reserves[0].toString());
 
   return marketPrice;
 }

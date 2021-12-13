@@ -5,7 +5,7 @@ import { Trans } from "@lingui/macro";
 const externalUrls = [
   // {
   //   title: <Trans>Buy $MUSH</Trans>,
-  //   url: "https://pancakeswap.finance/swap?inputCurrency=0xe9e7cea3dedca5984780bafc599bd69add087d56&outputCurrency=0xcc238200cFfdA7A5E2810086c26d5334e64F1155",
+  //   url: "https://pancakeswap.finance/swap?inputCurrency=0xe9e7cea3dedca5984780bafc599bd69add087d56&outputCurrency=0xddC7aebCAd4d6d4b4d437A97faE76d4042e6a9Cc",
   //   icon: <img width="20" src={PancakeIcon} />,
   // },
   // {

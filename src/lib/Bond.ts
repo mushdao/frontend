@@ -38,6 +38,7 @@ interface BondOpts {
   displayName: string; // Displayname on UI
   isAvailable: Available; // set false to hide
   isRef: boolean;
+  bondHelper: boolean;
   bondIconSvg: React.ReactNode; //  SVG path for icons
   bondContractABI: ethers.ContractInterface; // ABI for contract
   networkAddrs: NetworkAddresses; // Mapping of network --> Addresses
@@ -52,6 +53,7 @@ export abstract class Bond {
   readonly type: BondType;
   readonly isAvailable: Available;
   readonly isRef: Boolean;
+  readonly bondHelper: Boolean;
   readonly bondIconSvg: React.ReactNode;
   readonly bondContractABI: ethers.ContractInterface; // Bond ABI
   readonly networkAddrs: NetworkAddresses;
@@ -71,6 +73,7 @@ export abstract class Bond {
     this.type = type;
     this.isAvailable = bondOpts.isAvailable;
     this.isRef = bondOpts.isRef;
+    this.bondHelper = bondOpts.bondHelper;
     this.bondIconSvg = bondOpts.bondIconSvg;
     this.bondContractABI = bondOpts.bondContractABI;
     this.networkAddrs = bondOpts.networkAddrs;
@@ -125,6 +128,7 @@ export interface LPBondOpts extends BondOpts {
 export class LPBond extends Bond {
   readonly isLP = true;
   readonly isRef: Boolean;
+  readonly bondHelper: Boolean;
   readonly lpUrl: string;
   readonly reserveContract: ethers.ContractInterface;
   readonly displayUnits: string;
@@ -136,6 +140,7 @@ export class LPBond extends Bond {
     this.reserveContract = lpBondOpts.reserveContract;
     this.displayUnits = "LP";
     this.isRef = lpBondOpts.isRef;
+    this.bondHelper = lpBondOpts.bondHelper;
   }
   async getTreasuryBalance(networkID: NetworkID, provider: StaticJsonRpcProvider) {
     const token = this.getContractForReserve(networkID, provider);
@@ -155,6 +160,7 @@ export interface StableBondOpts extends BondOpts {}
 export class StableBond extends Bond {
   readonly isLP = false;
   readonly isRef: Boolean;
+  readonly bondHelper: Boolean;
   readonly reserveContract: ethers.ContractInterface;
   readonly displayUnits: string;
 
@@ -164,6 +170,7 @@ export class StableBond extends Bond {
     this.displayUnits = stableBondOpts.displayName;
     this.reserveContract = ierc20Abi; // The Standard ierc20Abi since they're normal tokens
     this.isRef = stableBondOpts.isRef;
+    this.bondHelper = stableBondOpts.bondHelper;
   }
 
   async getTreasuryBalance(networkID: NetworkID, provider: StaticJsonRpcProvider) {
