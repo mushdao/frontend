@@ -18,11 +18,21 @@ const getReferralFromStorage = () => {
   window.localStorage.removeItem("referral")
   return ""
 }
+const getMyReferralFromStorage = () => {
+  const _value = window.localStorage.getItem("my_referral") || ""
+  if (_value) {
+    return _value;
+  }
+  //
+  window.localStorage.removeItem("my_referral")
+  return ""
+}
 
 const initialState = {
   loading: false,
   loadingMarketPrice: false,
   referral: getReferralFromStorage(),
+  myReferral: getMyReferralFromStorage()
 };
 const circulatingSupply = {
   inputs: [],
@@ -208,6 +218,12 @@ const appSlice = createSlice({
         window.localStorage.setItem("referral", state.referral);
       }
     },
+    setMyReferral(state, action: PayloadAction<string>) {
+      if (action.payload) {
+        state.myReferral = action.payload;
+        window.localStorage.setItem("my_referral", state.myReferral);
+      }
+    },
   },
   extraReducers: builder => {
     builder
@@ -240,6 +256,6 @@ const baseInfo = (state: RootState) => state.app;
 
 export default appSlice.reducer;
 
-export const { fetchAppSuccess, setReferral } = appSlice.actions;
+export const { fetchAppSuccess, setReferral, setMyReferral } = appSlice.actions;
 
 export const getAppState = createSelector(baseInfo, app => app);

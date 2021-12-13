@@ -219,7 +219,6 @@ export const bondAsset = createAsyncThunk(
     const maxPremium = Math.round(Number(calculatePremium.toString()) * (1 + acceptedSlippage));
 
     const referralCode = referral ? referral : "";
-    
     // Deposit the bond
     let bondTx;
     let uaData = {

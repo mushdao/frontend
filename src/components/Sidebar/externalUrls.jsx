@@ -35,7 +35,7 @@ const externalUrls = [
   // },
   {
     title: <Trans>Docs</Trans>,
-    url: "https://docs.mush.finance/",
+    url: "https://docs.mushdao.finance/",
     icon: <SvgIcon color="secondary" component={DocsIcon} viewBox="0 0 18 21" />,
   },
   // {

@@ -1,7 +1,7 @@
 import { useState, useEffect, createRef } from "react";
 import { useAddress } from "src/hooks/web3Context";
 import { useStore, useDispatch } from "react-redux";
-import { setReferral } from "../../slices/AppSlice";
+import { setMyReferral } from "../../slices/AppSlice";
 import { abi as ReferralABI } from "../../abi/Referral.json";
 import { ethers, utils } from "ethers";
 import { useWeb3Context } from "src/hooks/web3Context";
@@ -46,18 +46,18 @@ export default function Referral() {
   const dispatch = useDispatch();
 
   var {
-    app: { referral: referralStorage },
+    app: { myReferral: referralStorage },
   } = useStore().getState();
 
   const hostAddress = "http://mushdao.finance";
 
-  const [openClainm, setOpenClainm] = useState(false);
-  const handleCloseClaim = (event, reason) => {
+  const [openNotifi, setOpenNotifi] = useState(false);
+  const handleCloseNotifi = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
 
-    setOpenClainm(false);
+    setOpenNotifi(false);
   };
 
   const [open, setOpen] = useState(false);
@@ -68,6 +68,8 @@ export default function Referral() {
   var [referralCode, setReferralCode] = useState(currentReferral ?? "");
   const [myRewardsNumber, setMyRewardsNumber] = useState(0);
 
+  const [alertType, setAlertType] = useState("success");
+  const [alertMessage, setAlertMessage] = useState("");
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -111,14 +113,28 @@ export default function Referral() {
     const referralContract = new ethers.Contract(addresses[chainID].REFERRAL, ReferralABI, signer);
 
     const code32String = utils.formatBytes32String(code);
+
+    let addressByCode = await referralContract.referrals(code32String);
+
+    if (addressByCode === address) {
+      done();
+      return;
+    }
     try {
       const tx = await referralContract.createReferral(address, code32String);
       await tx.wait();
-      console.log("done!");
+
       done();
       setLoading(false);
+      setAlertType("success");
+      setAlertMessage("Successfully!");
+      setOpenNotifi(true);
     } catch (error) {
       console.log(error);
+      setAlertType("error");
+      setAlertMessage(error.data.message.toString());
+      setOpenNotifi(true);
+
       setLoading(false);
     }
   };
@@ -135,10 +151,16 @@ export default function Referral() {
       await tx.wait();
       await getMyRewards();
       setLoadingClaim(false);
-      setOpenClainm(true);
+
+      setAlertType("success");
+      setAlertMessage("Successfully!");
+      setOpenNotifi(true);
     } catch (error) {
       setLoadingClaim(false);
       console.error(error);
+      setAlertType("error");
+      setAlertMessage("Error!");
+      setOpenNotifi(true);
     }
   };
 
@@ -152,7 +174,7 @@ export default function Referral() {
         await createReferralCode(referralCode, () => {
           // if success
           setMyRewardsNumber(0);
-          dispatch(setReferral(referralCode));
+          dispatch(setMyReferral(referralCode));
           setCurrentReferral(referralCode);
         });
       }
@@ -219,8 +241,13 @@ export default function Referral() {
                               </FormControl>
                             </Box>
                             {loading ? (
-                              <Button style={{ width: "100px" }} loading variant="contained" color="primary">
-                                Loading
+                              <Button
+                                style={{ width: "100px" }}
+                                className={{ loading: loading }}
+                                variant="contained"
+                                color="primary"
+                              >
+                                Loading...
                               </Button>
                             ) : (
                               <Button
@@ -298,9 +325,9 @@ export default function Referral() {
                 </Grid>
               </Grid>
 
-              <Snackbar open={openClainm} autoHideDuration={6000} onClose={handleCloseClaim}>
-                <Alert onClose={handleCloseClaim} severity="success" sx={{ width: "100%" }}>
-                  This is a success message!
+              <Snackbar open={openNotifi} autoHideDuration={6000} onClose={handleCloseNotifi}>
+                <Alert onClose={handleCloseNotifi} severity={alertType} sx={{ width: "100%" }}>
+                  {alertMessage}
                 </Alert>
               </Snackbar>
             </Paper>

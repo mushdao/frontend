@@ -8,24 +8,24 @@ import { ReactComponent as Telegram } from "../../assets/icons/tele.svg";
 export default function Social() {
   return (
     <div className="social-row">
-      {/* <Link href="https://github.com/mushfi" target="_blank">
+      <Link href="https://github.com/mushdao" target="_blank">
         <SvgIcon component={GitHub} />
-      </Link> */}
-      <Link href="https://twitter.com/mush_bsc" target="_blank">
+      </Link>
+      <Link href="https://twitter.com/Mush_DAO" target="_blank">
         <SvgIcon component={Twitter} />
       </Link>
 
-      {/* <Link href="https://medium.com/@mush" target="_blank">
+      <Link href="https://medium.com/@MushDao" target="_blank">
         <SvgIcon component={Medium} />
-      </Link> */}
+      </Link>
 
-      <Link href="https://t.me/mush_BSC" target="_blank">
+      <Link href="https://t.me/MushDAO" target="_blank">
         <SvgIcon viewBox="0 0 40 35" component={Telegram} />
       </Link>
 
-      <Link href="https://medium.com/@mush" target="_blank">
+      {/* <Link href="https://medium.com/@mush" target="_blank">
         <SvgIcon component={Discord} />
-      </Link>
+      </Link> */}
     </div>
   );
 }
